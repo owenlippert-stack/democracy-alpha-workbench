@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, 'chore/*', 'feat/*' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install deps (if requirements exist)
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Syntax check
+        run: python -m compileall .
